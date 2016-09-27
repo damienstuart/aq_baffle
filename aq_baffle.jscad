@@ -9,7 +9,7 @@ function bottom_tray() {
         difference(outside, inside),
         CSG.cube({corner1:[0,0,0], corner2:[120,4,2]})
     );
-//*
+
     for (x=5; x<116; x+=4) {
         for (y=-15; y>-62; y-=4) {
             tray = difference(
@@ -18,7 +18,7 @@ function bottom_tray() {
             )
         }
     }
-//*/
+
     var cutout1 = CSG.cube({corner1:[41,2,101],corner2:[101,-2,2]});
     return difference(tray, cutout1);
 }
@@ -30,6 +30,7 @@ function brackets() {
     var bracket = brkt1.rotateX(90).rotateZ(-90).translate([36,-2,2]);
     return union(bracket, bracket.translate([73,0,0]));
 }
+
 function main() {
     return union(
         bottom_tray(),
