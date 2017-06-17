@@ -1,7 +1,8 @@
 /*
  * aq_baffle_tray.jscad
 */
-function bottom_tray(holes=true) {
+function bottom_tray(holes=true, back_holes=true, side_holes=true) {
+    var hole_size = 4;
     // The tray box
     var outside = CSG.cube({corner1:[0,0,0], corner2:[120,-64,20]});
     var inside = CSG.cube({corner1:[2,-2,2], corner2:[118,-62,20]});
@@ -18,10 +19,26 @@ function bottom_tray(holes=true) {
                 if((x==31 || x==106) && (y==-16)) {
                     continue;
                 }
-                tray = difference(
-                    tray,
-                    CSG.cube({corner1:[x,y,0], corner2:[x+3,y-3,2]})
+                tray = difference( tray,
+                    CSG.cube({corner1:[x,y,0], corner2:[x+hole_size,y-hole_size,2]})
                 )
+                if (side_holes && x==6 && (y%2==0)) {
+                    tray = difference( tray, //union(
+                        CSG.cube({corner1:[0,y,9],
+                                  corner2:[120,y-hole_size,9+hole_size]}));//,
+                    //    CSG.cube({corner1:[0,y,9+(hole_size+1)],
+                    //              corner2:[120,y-hole_size,9+(hole_size*2)+1]})
+                    //));
+                }
+            }
+            // Holes for the back of the tray
+            if (back_holes && (x%3==0)) {
+                tray = difference( tray, //union(
+                    CSG.cube({corner1:[x,-62,9],
+                              corner2:[x+hole_size,-64,9+hole_size]}));//,
+                //    CSG.cube({corner1:[x,-62,9+hole_size+1],
+                //              corner2:[x+hole_size,-64,9+(hole_size*2)+1]})
+                //));
             }
         }
     }
@@ -34,10 +51,10 @@ function bottom_tray(holes=true) {
     var rail_base = CAG.fromPoints([ [0,0],[0,2],[2,2],[0,0] ]);
     var r1 = linear_extrude({height: 14}, rail_base);
     var r2 = r1.rotateY(180).translate([-2.75,0,14]);
-    var left_rail = union(r1,r2).translate([33.9,-4,2]);
+    var left_rail = union(r1,r2).translate([34.4,-4,2]);
 
     // the clip holes for the tray brackets
-    var brk_cut1 = CSG.cube({corner1:[31.15,-2,0],corner2:[33.9,-5.5,2]});
+    var brk_cut1 = CSG.cube({corner1:[31.65,-2,0],corner2:[34.4,-5.5,2]});
     var brk_cut2 = brk_cut1.translate([75,0,0]);
     var brk_cut3 = brk_cut1.translate([0,-11.5,0]);
     var brk_cut4 = brk_cut2.translate([0,-11.5,0]);
