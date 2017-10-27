@@ -21,8 +21,8 @@ function bottom_tray(holes=true, back_holes=true, side_holes=true) {
                 }
                 tray = difference( tray,
                     CSG.cube({corner1:[x,y,0], corner2:[x+hole_size,y-hole_size,2]})
-                )
-                if (side_holes && x==6 && (y%2==0)) {
+                );
+                if (side_holes && x==6 && (y%2===0)) {
                     tray = difference( tray, //union(
                         CSG.cube({corner1:[0,y,9],
                                   corner2:[120,y-hole_size,9+hole_size]}));//,
@@ -32,7 +32,7 @@ function bottom_tray(holes=true, back_holes=true, side_holes=true) {
                 }
             }
             // Holes for the back of the tray
-            if (back_holes && (x%3==0)) {
+            if (back_holes && (x%3===0)) {
                 tray = difference( tray, //union(
                     CSG.cube({corner1:[x,-62,9],
                               corner2:[x+hole_size,-64,9+hole_size]}));//,
